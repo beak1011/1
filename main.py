@@ -30,7 +30,7 @@ def send_discord_alert():
     today_schedule = SCHEDULE_DATA.get(day, "정보 없음")
     
     # 디스코드 메시지 내용 구성 (색상 및 포맷)
-    content = f" **[12월 {day}일 스케줄 알림]**\n오늘 신효주님의 근무: **{today_schedule}** 입니다."
+    content = f" **[12월 {day}일 스케줄 알림]**\n오늘 이쁜이님의 근무: **{today_schedule}** 입니다."
 
     # 디스코드 웹훅 전송
     webhook_url = os.environ.get("DISCORD_WEBHOOK_URL")
