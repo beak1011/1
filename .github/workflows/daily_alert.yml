@@ -1,0 +1,27 @@
+name: Daily Schedule Notification
+
+on:
+  schedule:
+    # 매일 한국 시간 오전 8시에 실행 (UTC 기준 23시)
+    - cron: '0 15 * * *'
+  workflow_dispatch: # 수동으로 테스트 실행 가능하게 하는 버튼
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v3
+
+      - name: 파이썬 설정
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: 필요 라이브러리 설치
+        run: pip install requests
+
+      - name: 스케줄 알림 실행
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python main.py
