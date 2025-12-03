@@ -3,7 +3,7 @@ name: Daily Schedule Notification
 on:
   schedule:
     # 매일 한국 시간 오전 8시에 실행 (UTC 기준 23시)
-    - cron: '15 15 * * *'
+    - cron: '45 15 * * *'
   workflow_dispatch: # 수동으로 테스트 실행 가능하게 하는 버튼
 
 jobs:
