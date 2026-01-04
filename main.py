@@ -3,26 +3,25 @@ import requests
 import os
 from datetime import datetime, timedelta, timezone
 
-# 1. OCR로 추출한 12월 신효주님 스케줄 데이터
+# 1. 징우여찡구님의 1월 스케줄 데이터 (제공된 표의 두 번째 열 반영)
 SCHEDULE_DATA = {
-  "1": "OFF", "2": "OFF", "3": "마감", "4": "마감", "5": "오픈",
-  "6": "오픈", "7": "오픈", "8": "오픈", "9": "오픈", "10": "마감",
-  "11": "마감", "12": "마감", "13": "오픈", "14": "오픈", "15": "OFF",
-  "16": "개인일정", "17": "OFF", "18": "개인일정", "19": "마감", "20": "마감",
-  "21": "마감", "22": "오픈", "23": "오픈", "24": "마감", "25": "마감",
-  "26": "오픈", "27": "OFF", "28": "OFF", "29": "OFF", "30": "OFF", "31": "OFF"
+    "1": "OFF", "2": "OFF", "3": "OFF", "4": "OFF", "5": "OFF",
+    "6": "OFF", "7": "마감", "8": "마감", "9": "오픈", "10": "오픈",
+    "11": "오픈", "12": "OFF", "13": "마감", "14": "마감", "15": "오픈",
+    "16": "오픈", "17": "OFF", "18": "마감", "19": "오픈", "20": "마감",
+    "21": "마감", "22": "마감", "23": "오픈", "24": "OFF", "25": "마감",
+    "26": "오픈", "27": "오픈", "28": "마감", "29": "오픈", "30": "오픈",
+    "31": "OFF"
 }
 
 def get_status_emoji(status):
-    """근무 상태에 따라 어울리는 하트 반환"""
+    """근무 상태에 따라 어울리는 하트 반환 (오픈, OFF, 마감만 사용)"""
     if status == "오픈":
         return "💛" # 아침 느낌 노란 하트
     elif status == "마감":
         return "💜" # 저녁 느낌 보라 하트
     elif status == "OFF":
         return "🤍" # 휴식 느낌 하얀 하트
-    elif status == "개인일정":
-        return "🩷" # 개인 일정 핑크 하트
     else:
         return "❤️" # 기본 빨간 하트
 
@@ -43,19 +42,18 @@ def send_discord_alert():
         # 요일 (0:월 ~ 6:일)
         weekday_str = ["월", "화", "수", "목", "금", "토", "일"][target_date.weekday()]
 
-        # 데이터 조회
-        if month == "12":
+        # 데이터 조회 (징우여찡구님의 1월 스케줄을 조회)
+        if month == "1": # 1월 데이터 조회
             schedule = SCHEDULE_DATA.get(day, "정보 없음")
         else:
+            # 1월이 아닌 달은 '-'로 표시
             schedule = "-"
         
         # 하트 아이콘 매칭
         heart = get_status_emoji(schedule)
 
-        # 필드 추가 (inline=True로 하면 가로로 예쁘게 정렬될 수 있음, 모바일은 세로)
-        # 날짜 제목
+        # 필드 추가
         date_title = f"{month}/{day} ({weekday_str})"
-        # 내용 (하트 + 스케줄)
         value_text = f"{heart} **{schedule}**"
         
         fields_list.append({
@@ -66,7 +64,7 @@ def send_discord_alert():
 
     # 임베드 데이터 구성
     embed = {
-        "title": "🩷 12월 이쁜이 근무 스케줄 알림",
+        "title": "🩷 1월 징우여찡구 스케줄 알림",
         "description": "오늘 내일 모래",
         "color": 0xFFB6C1, # 파스텔 핑크 색상 코드
         "fields": fields_list,
